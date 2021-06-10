@@ -23,7 +23,7 @@ public with sharing class OrderTriggerHandler extends TriggerHandler {
                     }
                     else 
                     {
-                        ordemFoda.adderror('Os valores de Quantidade e Preço não foram preenchidos.');
+                        ordemFoda.adderror('Os valores de Quantidade e ou Preço não foram preenchidos.');
                     }
                 }
                 // CALCULAR QUANTIDADE
@@ -35,7 +35,7 @@ public with sharing class OrderTriggerHandler extends TriggerHandler {
                     }
                     else 
                     {
-                        ordemFoda.adderror('Os valores de Total e Preço não foram preenchidos.');
+                        ordemFoda.adderror('Os valores de Total e ou Preço não foram preenchidos.');
                     }
                 }
             }
@@ -68,7 +68,7 @@ public with sharing class OrderTriggerHandler extends TriggerHandler {
             }
             else 
             {
-                ordemFoda.adderror('Os valores de Quantidade e Preço não foram preenchidos.');
+                ordemFoda.adderror('Os valores de Quantidade e ou Preço não foram preenchidos.');
             }
         }
 
