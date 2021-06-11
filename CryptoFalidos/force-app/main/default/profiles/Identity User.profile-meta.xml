@@ -250,6 +250,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>OrderTriggerHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PostPriceChangeToSlack</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -288,6 +292,14 @@
     <classAccesses>
         <apexClass>SlackOpportunityPublisherTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TriggerHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TriggerHandler_Test</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <custom>false</custom>
     <fieldPermissions>
