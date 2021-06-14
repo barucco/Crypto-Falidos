@@ -1,0 +1,16 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<lightning:card title="Negociar">
+		<lightning:tabset>
+			<lightning:tab label="Compra">
+				<div class="slds-box slds-box_x-small">
+					Código de Compra
+				</div>
+			</lightning:tab>
+			<lightning:tab label="Venda">
+				<div class="slds-box slds-box_x-small">
+					Código de Venda
+				</div>
+			</lightning:tab>
+		</lightning:tabset>
+	</lightning:card>
+</aura:component>	
