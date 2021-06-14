@@ -33,7 +33,7 @@
 </aura:component>
 =======
 <aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
-	<lightning:card title="Negociar">
+	<lightning:card title="Negociar" iconName="client">
 		<lightning:tabset>
 			<lightning:tab label="Compra">
 				<div class="slds-box slds-box_x-small">
