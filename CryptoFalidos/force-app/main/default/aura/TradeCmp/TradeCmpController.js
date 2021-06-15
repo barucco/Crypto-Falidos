@@ -7,8 +7,12 @@
 
         action.setCallback(this, function(response) {
             var state = response.getState();
+            //var cotacao = response.getReturnValue();
             if (state == "SUCCESS") {
-                alert('O preço atual é: ' + response.getReturnValue());
+                //alert('O preço atual é: ' + response.getReturnValue());
+              var cotacao = response.getReturnValue();
+              component.set("v.opCotacao", cotacao); 
+                //alert('O preço atual é: ' + cotacao);
             } else {
                 console.log("Erro: " + JSON.stringify(response.getError()));
             }
