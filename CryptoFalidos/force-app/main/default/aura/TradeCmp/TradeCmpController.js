@@ -25,4 +25,5 @@
     handleOrder: function(component, event, helper) {
         alert('Código de salvar a ordem');
     }
+
 })
