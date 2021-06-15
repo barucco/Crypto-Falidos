@@ -6,7 +6,6 @@
     <aura:attribute name="opCotacao" type="String" />
     <!-- <lightning:card title="{!'Negociar - Cotação: R$ ' + v.opCotacao}" iconname="standard:partner_fund_allocation"> -->
         <lightning:card title="Negociar" iconName="action:new_child_case" >
-            <lightning:dynamicIcon type="eq" option="play" title="Negociar" alternativeText="Recording in progress" value="Negociar"/> Negociar
             <span style="color:rgb(253, 62, 55); font-weight:bold">
 
             <div class="slds-box slds-box_small">
