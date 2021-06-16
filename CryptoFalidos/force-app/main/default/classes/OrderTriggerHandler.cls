@@ -1,76 +1,31 @@
 public with sharing class OrderTriggerHandler extends TriggerHandler {
     
-    public OrderTriggerHandler() 
-    {
-        
-    }
+    public OrderTriggerHandler() { }
 
-    protected override void beforeInsert() 
-    {
+    protected override void beforeInsert() {
 
-        for(Ordem__c o : (List<Ordem__c>) trigger.new)
-        {
-            Ordem__c ordemFoda = o;
+        for(Ordem__c o : (List<Ordem__c>) trigger.new) {
+
+            OrderDomain order = new OrderDomain(o);
             
-            if(trigger.isInsert)
-            {
-                // CALCULAR TOTAL
-                if(ordemFoda.Total__c == null)
-                {
-                    if(ordemFoda.preco__c != null && ordemFoda.Quantidade__c != null)
-                    {
-                        ordemFoda.Total__c = ordemFoda.Quantidade__c * ordemFoda.preco__c;
-                    }
-                    else 
-                    {
-                        ordemFoda.adderror('Os valores de Quantidade e ou Preço não foram preenchidos.');
-                    }
-                }
-                // CALCULAR QUANTIDADE
-                else
-                {
-                    if(ordemFoda.preco__c != null)
-                    {
-                        ordemFoda.Quantidade__c = ordemFoda.Total__c / ordemFoda.preco__c;
-                    }
-                    else 
-                    {
-                        ordemFoda.adderror('Os valores de Total e ou Preço não foram preenchidos.');
-                    }
-                }
+            if(trigger.isInsert) {
+                if(order.getTotal() == null) order.RecalculaTotal();
+                else order.RecalculaQuantidade();
             }
         }    
-
     }
-    
     protected override void beforeUpdate() {
 
-        for(Ordem__c o : (List<Ordem__c>) trigger.new)
-        {
+        for(Ordem__c o : (List<Ordem__c>) trigger.new) {
             
-            Ordem__c ordemFoda = o;
-            Ordem__c ordemRuim = (Ordem__c) trigger.oldMap.get(ordemFoda.id);
+            OrderDomain order = new OrderDomain(o);
+            Ordem__c ordemAntiga = (Ordem__c) trigger.oldMap.get(o.id);
 
-            //SE TOTAL FOI ALTERADO EM DISPARIDADE COM O PREÇO E QUANTIDADE
-            if(ordemFoda.Quantidade__c != null && ordemFoda.preco__c != null)
-            {
-                if (ordemRuim.Total__c != ordemFoda.Total__c && ordemFoda.Total__c != (ordemFoda.Quantidade__c * ordemFoda.preco__c)) 
-                {
-                    //GERAR MENSAGEM DE ERRO
-                    ordemFoda.adderror('O Total não pode ser alterado manualmente depois que a ordem foi criada.');
-                }
-                //MUDOU QUANTIDADE OU PREÇO
-                if (ordemRuim.Quantidade__c != ordemFoda.Quantidade__c || ordemRuim.preco__c != ordemFoda.preco__c) 
-                {
-                    //RECALCULAR TOTAL
-                    ordemFoda.Total__c = ordemFoda.Quantidade__c * ordemFoda.preco__c;
-                }
-            }
-            else 
-            {
-                ordemFoda.adderror('Os valores de Quantidade e ou Preço não foram preenchidos.');
-            }
+            if(order.IsFieldDifferent(Schema.Ordem__c.Total__c, ordemAntiga)) 
+                o.adderror('O Total não pode ser alterado manualmente depois que a ordem foi criada');
+
+            if(order.IsFieldDifferent(Schema.Ordem__c.Quantidade__c, ordemAntiga) || order.isFieldDifferent(Schema.Ordem__c.preco__c, ordemAntiga))
+                order.RecalculaTotal();
         }
-
     }
 }

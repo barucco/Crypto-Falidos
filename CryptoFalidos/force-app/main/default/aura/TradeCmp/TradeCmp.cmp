@@ -6,15 +6,16 @@
     <aura:attribute name="opCotacao" type="String" />
     <!-- <lightning:card title="{!'Negociar - Cotação: R$ ' + v.opCotacao}" iconname="standard:partner_fund_allocation"> -->
         <lightning:card title="Negociar" iconName="action:new_child_case" >
-            <span style="color:rgb(253, 62, 55); font-weight:bold">
-
             <div class="slds-box slds-box_small">
-                COTAÇÃO: <lightning:formattedNumber value="{!v.opCotacao}" style="currency" currencyCode="BRL" />
+                <span style="color:rgb(76, 0, 255); font-weight:bold">
+                COTAÇÃO: <lightning:formattedNumber value="{!v.opCotacao}" style="currency" currencyCode="BRL" maximumFractionDigits="5"/>
+                </span>
                 <lightning:tabset>
                     <lightning:tab label="Compra">
                         <lightning:recordEditForm objectApiName="Ordem__c" onsubmit="{!c.handleOrder}">
                             <lightning:messages />
                             <lightning:inputField fieldName="OperacaoMercado__c" onchange="{!c.handleChange}" />
+                            <lightning:inputField fieldName="preco__c" readonly="true" value="{!v.opCotacao}" />
                             <lightning:inputField fieldName="Quantidade__c" />
                             <aura:if isTrue="{!v.opMercado}">
                                 <lightning:inputField fieldName="Preco__c" />
@@ -28,6 +29,7 @@
                         <lightning:recordEditForm objectApiName="Ordem__c" onsubmit="{!c.handleOrder}">
                             <lightning:messages />
                             <lightning:inputField fieldName="OperacaoMercado__c" onchange="{!c.handleChange}" />
+                            <lightning:inputField fieldName="preco__c" readonly="true" value="{!v.opCotacao}" />
                             <lightning:inputField fieldName="Quantidade__c" />
                             <aura:if isTrue="{!v.opMercado}">
                                 <lightning:inputField fieldName="Preco__c" />
@@ -38,9 +40,6 @@
                         </lightning:recordEditForm>
                     </lightning:tab>
                 </lightning:tabset>
-
             </div>
-        </span>
-
         </lightning:card>
 </aura:component>
