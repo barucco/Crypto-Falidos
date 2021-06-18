@@ -1,12 +1,11 @@
 public class BinanceAPI {
-
+    
     @AuraEnabled
-    public static String getPrice(String mercadoId) {
-        
-        Mercado__c mercado = [SELECT Id, Moeda_Primaria__c, Moeda_Secundaria__c
+    public static String getPrice(String mercadoId){
+        Mercado__c mercado = [SELECT Id, Moeda_Primaria__c, Moeda_Secundaria__c 
                               FROM Mercado__c
                               WHERE Id = :mercadoId];
-        
+
         String pair = mercado.Moeda_Primaria__c + mercado.Moeda_Secundaria__c;
         pair = pair.replace('USD', 'USDT');
 
@@ -16,16 +15,21 @@ public class BinanceAPI {
         request.setMethod('GET');
         HttpResponse response = http.send(request);
         if (response.getStatusCode() == 200) {
-            system.debug(response.getBody());
             SymbolPrice sp = (SymbolPrice)JSON.deserialize(response.getBody(), SymbolPrice.class);
             return sp.price;
-        } else {
-            return 'Erro ao acessar a API da Binance';
+        }else{
+            return 'Erro ao acessar a API da Binance!';
         }
     }
-    private class SymbolPrice {
+
+    private Class SymbolPrice{
         String symbol;
         String price;
-        
+    }
+
+    @AuraEnabled
+    public static String getRecordTypeId(String orderType){
+        String rTypeId = Schema.SObjectType.Ordem__c.getRecordTypeInfosByDeveloperName().get(orderType).getRecordTypeId();
+        return rTypeId;
     }
 }

@@ -9,7 +9,7 @@ public with sharing class OrderDomain {
 
         this.order = order;      
     }
-    public void RecalculaTotal() {
+    public void recalculaTotal() {
 
         if(order.preco__c != null && order.Quantidade__c != null ) {
 
@@ -19,7 +19,7 @@ public with sharing class OrderDomain {
             order.adderror('Os valores de Quantidade e ou Preço não foram preenchidos.');
         }
     }
-    public void RecalculaQuantidade() {
+    public void recalculaQuantidade() {
 
         if(order.preco__c != null && order.Total__c != null ) {
             order.Quantidade__c = order.Total__c * order.preco__c;
@@ -27,7 +27,7 @@ public with sharing class OrderDomain {
             order.adderror('Os valores de Total e ou Preço não foram preenchidos.');
         }        
     }
-    public Boolean IsFieldDifferent(sObjectField field, Ordem__c compareOrder) {
+    public Boolean isFieldDifferent(sObjectField field, Ordem__c compareOrder) {
 
         return order.get(field) != compareOrder.get(field);
     }

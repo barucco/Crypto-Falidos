@@ -9,8 +9,12 @@ public with sharing class OrderTriggerHandler extends TriggerHandler {
             OrderDomain order = new OrderDomain(o);
             
             if(trigger.isInsert) {
-                if(order.getTotal() == null) order.RecalculaTotal();
-                else order.RecalculaQuantidade();
+                if(order.getTotal() == null) {
+                    order.recalculaTotal();
+                }    
+                else {
+                    order.recalculaQuantidade();
+                }
             }
         }    
     }
@@ -21,11 +25,13 @@ public with sharing class OrderTriggerHandler extends TriggerHandler {
             OrderDomain order = new OrderDomain(o);
             Ordem__c ordemAntiga = (Ordem__c) trigger.oldMap.get(o.id);
 
-            if(order.IsFieldDifferent(Schema.Ordem__c.Total__c, ordemAntiga)) 
+            if(order.isFieldDifferent(Schema.Ordem__c.Total__c, ordemAntiga)) {
                 o.adderror('O Total não pode ser alterado manualmente depois que a ordem foi criada');
+            }
 
-            if(order.IsFieldDifferent(Schema.Ordem__c.Quantidade__c, ordemAntiga) || order.isFieldDifferent(Schema.Ordem__c.preco__c, ordemAntiga))
-                order.RecalculaTotal();
+            if(order.isFieldDifferent(Schema.Ordem__c.Quantidade__c, ordemAntiga) || order.isFieldDifferent(Schema.Ordem__c.preco__c, ordemAntiga)) {
+                order.recalculaTotal();
+            }
         }
     }
 }
