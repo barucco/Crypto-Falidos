@@ -22,6 +22,12 @@
         component.find("ordField").forEach(function(f){
             f.reset();
         });
+
+        var orderEvt = $A.get("e.c:OrderEvent");
+        orderEvt.setParams({
+            "Context" : "TradeCmp"
+        });
+        orderEvt.fire();
     },
 
     handleOrder : function(component, event, helper) {
@@ -39,9 +45,9 @@
                var rtId = response.getReturnValue();
                fields["getRecordTypeId"] = rtId;
                if(fields["OperacaoMercado__c"] == false){
-                    fields["Status__c"] = "Aguardando";
+                    fields["OrdemStatus__c"] = "Aguardando";
                }else{
-                    fields["Status__c"] = "Executada";
+                    fields["OrdemStatus__c"] = "Executada";
                }
                if(fields["preco__c"] == undefined){
                     fields["preco__c"] = component.get("v.opCotacao");

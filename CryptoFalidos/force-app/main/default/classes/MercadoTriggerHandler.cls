@@ -1,27 +1,38 @@
 public with sharing class MercadoTriggerHandler extends TriggerHandler {
-
     public MercadoTriggerHandler() {
-    }     
-    public override void afterUpdate() {
-        List<Mercado__c> mercados = trigger.new;
-        List<Ordem__c> ordensToUpdate = new List<Ordem__c>();
-        List<Mercado__c> mercadoTriggerList = [SELECT Id, CotacaoAtual__c, (SELECT Id, preco__c
-                                                                            FROM Ordem__c
-                                                                            WHERE Status__c = 'Aguardando')
-                                                FROM Mercado__c
-                                                WHERE Id in :Trigger.newMap.keySet()];
-        for(Mercado__c mercado : mercadoTriggerList) {
-            for(Ordem__c ordem : mercado.Ordem__c) {
-                if(ordem.Mercado__c == mercado.Id) {
-                    double precoAntigo = trigger.oldMap.get(mercado.Id).preco__c;
-                    double precoOrdem = ordem.preco__c;
-                    double precoNovo = mercado.preco__c;
-                    if((precoOrdem >= precoAntigo && precoOrdem <= precoNovo) || (precoOrdem <= precoAntigo && precoOrdem >= precoNovo)) {
-                        ordensToUpdate.add(new Ordem__c(Id = ordem.Id, Status__c = 'Executada'));
-                    }
-                 }
+    }
+
+    protected override void afterUpdate() 
+    {
+        this.executaOrdem();
+    }
+
+    private void executaOrdem(){
+        List<Ordem__c> listUpdate = new List<Ordem__c>();
+        List<Ordem__c> listOrdem = [select id, preco__c, Mercado__c  
+                                    from Ordem__c 
+                                    where Mercado__c in :Trigger.newMap.keySet() and OrdemStatus__c = 'Aguardando'];
+        for(Ordem__c ordem : listOrdem){
+            decimal precoNovo = recuperaPrecoNovo(ordem.Mercado__c);
+            decimal precoAntigo = recuperaPrecoAntigo(ordem.Mercado__c);      
+            if((ordem.preco__c >= precoAntigo && ordem.preco__c <= precoNovo) || (ordem.preco__c <= precoAntigo && ordem.preco__c >= precoNovo)) 
+            {
+                listUpdate.add(new Ordem__c(id=ordem.id, OrdemStatus__c = 'Executada', preco__c = precoNovo));
             }
         }
-        update ordensToUpdate;
+
+        if(listUpdate.size()>0){
+            update listUpdate;
+        }
+    }
+
+    private decimal recuperaPrecoNovo(string id) {
+        Mercado__c m = (Mercado__c)trigger.newMap.get(id);
+        return m.CotacaoAtual__c;
+    }
+
+    private decimal recuperaPrecoAntigo(string id) {
+        Mercado__c m = (Mercado__c)trigger.oldMap.get(id);
+        return m.CotacaoAtual__c;
     }
 }
